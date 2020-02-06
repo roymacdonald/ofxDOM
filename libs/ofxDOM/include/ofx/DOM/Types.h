@@ -39,12 +39,12 @@ typedef ofRectangle Shape;
 //    OF_ORIENTATION_90_RIGHT = 4,
 //    OF_ORIENTATION_UNKNOWN = 5
 
-enum class Orientation
+enum Orientation
 {
     /// \brief Locks the Orientation to landscape.
-    HORIZONTAL,
+    HORIZONTAL = 0,
     /// \brief Locks the Orientation to portrait.
-    VERTICAL,
+    VERTICAL = 1,
     /// \brief Sets the Orientation based on the aspect ratio.
     DEFAULT
 };

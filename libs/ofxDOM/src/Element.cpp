@@ -14,7 +14,16 @@
 namespace ofx {
 namespace DOM {
 
-
+Element::Element(const ofRectangle& rect):
+Element("", rect.x, rect.y, rect.width, rect.height)
+{
+	
+}
+Element::Element(const std::string& id, const ofRectangle& rect):
+Element(id, rect.x, rect.y, rect.width, rect.height)
+{
+	
+}
 Element::Element(float x, float y, float width, float height):
     Element("", x, y, width, height)
 {
@@ -812,10 +821,16 @@ void Element::_draw(ofEventArgs& e)
 {
     if (_enabled && !_hidden)
     {
+		
         ofPushStyle();
-        ofPushMatrix();
-        ofTranslate(_shape.getPosition());
-
+		if(_drawAsViewport){
+			ofPushView();
+			ofViewport({getScreenX(), getScreenY(), _shape.width,_shape.height});
+			ofSetupScreen();
+		}else{
+			ofPushMatrix();
+			ofTranslate(_shape.getPosition());
+		}
         // Draw parent behind children.
         onDraw();
 
@@ -827,8 +842,11 @@ void Element::_draw(ofEventArgs& e)
             (*iter)->_draw(e);
             ++iter;
         }
-
-        ofPopMatrix();
+		if(_drawAsViewport){
+			ofPopView();
+		}else{
+			ofPopMatrix();
+		}
         ofPopStyle();
     }
 }
@@ -1045,6 +1063,16 @@ void Element::_onChildMoved(MoveEventArgs&)
 void Element::_onChildResized(ResizeEventArgs&)
 {
     invalidateChildShape();
+}
+
+void Element::setDrawAsViewport(bool bViewport)
+{
+	_drawAsViewport = bViewport;
+}
+
+bool Element::isDrawingAsViewport()const
+{
+	return _drawAsViewport;
 }
 
 

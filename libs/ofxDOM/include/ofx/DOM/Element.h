@@ -56,6 +56,13 @@ public:
     /// \param height the height of the Element.
     Element(float x, float y, float width, float height);
 
+	/// \brief Construct a new Element with the given parameters.
+    ///
+    /// The Element will take the default id, an empty string.
+    ///
+    /// \param rect the rectangle that defines the element
+	Element(const ofRectangle& rect);
+	
     /// \brief Construct a new Element with the given parameters.
     /// \param id The id of the Element.
     /// \param x the X position of the Element in its parent coordinates.
@@ -64,6 +71,11 @@ public:
     /// \param height the height of the Element.
     Element(const std::string& id, float x, float y, float width, float height);
 
+	/// \brief Construct a new Element with the given parameters.
+    /// \param id The id of the Element.
+    /// \param rect the rectangle that defines the element
+    Element(const std::string& id, const ofRectangle& rect);
+	
     /// \brief Destroy the Element.
     virtual ~Element();
 
@@ -544,7 +556,12 @@ public:
 
     // void setTabIndex(int index);
     // int getTabIndex() const;
-
+	
+	///\brief sets if to draw children by translating  or applying a viewport.
+	///\param bViewport when set to true it will draw children clipped by parent.
+	void setDrawAsViewport(bool bViewport);
+	///\brief get if is drawing children by translating  or applying a viewport.
+	bool isDrawingAsViewport()const;
 protected:
     /// \brief Setup method called by parent Element.
     /// \param e The event data.
@@ -653,6 +670,10 @@ private:
     /// \brief True if this Element can be focused.
     bool _focusable = false;
 
+	/// \brief True draw will draw children behind a viewport, clipping all by this.
+    bool _drawAsViewport = false;
+	
+	
     /// \brief Specifies the tabbing order in the current Element.
     // int _tabIndex = 0;
 
