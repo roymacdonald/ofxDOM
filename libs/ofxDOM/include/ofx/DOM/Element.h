@@ -418,6 +418,11 @@ public:
     /// \todo Cache screen position w/ shape.
     Position getScreenPosition() const;
 
+	/// \brief Get the Shape of the Element in screen coordinates.
+    /// \returns the Shape of the Element in screen coordinates.
+    /// \todo Cache screen shape w/ shape.
+    Shape getScreenShape() const;
+	
     /// \brief Get the X position of the Element in screen coordinates.
     /// \returns the X position of the Element in screen coordinates.
     float getScreenX() const;
@@ -570,11 +575,11 @@ protected:
     /// \brief Update method called by parent Element.
     /// \param e The event data.
     void _update(ofEventArgs& e);
-
+public:
     /// \brief Draw method called by parent Element.
     /// \param e The event data.
-    void _draw(ofEventArgs& e);
-
+	void _draw(ofEventArgs& e);
+protected:
     /// \brief Exit method called by parent Element.
     /// \param e The event data.
     void _exit(ofEventArgs& e);
@@ -628,6 +633,19 @@ protected:
     /// \returns true iff implicit pointer capture is enabled.
     bool getImplicitPointerCapture() const;
 
+	/// \brief apply the local transform related to this Element.
+	/// This function gets called inside _draw before drawing.
+	/// override if you want to apply a different transform.
+	/// if you do so you have to override other
+	// TODO: define the other stuff to override
+	virtual void _applyTransform();
+	
+	///\brief restore the transformation applied by this node.
+	/// this function gets called after drawing the current Element and its children
+	/// override if you have overriden _applytransform
+	virtual void _restoreTransform();
+	
+	
 private:
     /// \brief Not construction-copyable.
     Element(const Element& other) = delete;

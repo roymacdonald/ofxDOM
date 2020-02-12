@@ -640,6 +640,10 @@ Position Element::getScreenPosition() const
     return getPosition();
 }
 
+Shape Element::getScreenShape() const{
+	return Shape(getScreenPosition(), getWidth(), getHeight() );
+}
+
 
 float Element::getScreenX() const
 {
@@ -816,6 +820,24 @@ void Element::_update(ofEventArgs& e)
     }
 }
 
+void Element::_applyTransform(){
+	if(_drawAsViewport){
+		ofPushView();
+		ofViewport({getScreenX(), getScreenY(), _shape.width,_shape.height});
+		ofSetupScreen();
+	}else{
+		ofPushMatrix();
+		ofTranslate(_shape.getPosition());
+	}
+}
+
+void Element::_restoreTransform(){
+	if(_drawAsViewport){
+		ofPopView();
+	}else{
+		ofPopMatrix();
+	}
+}
 
 void Element::_draw(ofEventArgs& e)
 {
@@ -823,30 +845,21 @@ void Element::_draw(ofEventArgs& e)
     {
 		
         ofPushStyle();
-		if(_drawAsViewport){
-			ofPushView();
-			ofViewport({getScreenX(), getScreenY(), _shape.width,_shape.height});
-			ofSetupScreen();
-		}else{
-			ofPushMatrix();
-			ofTranslate(_shape.getPosition());
-		}
+		_applyTransform();
         // Draw parent behind children.
         onDraw();
 
         // Now draw in reverse order.
-        auto iter = _children.rbegin();
-
-        while (iter != _children.rend())
-        {
-            (*iter)->_draw(e);
-            ++iter;
-        }
-		if(_drawAsViewport){
-			ofPopView();
-		}else{
-			ofPopMatrix();
+		auto iter = _children.rbegin();
+		
+		while (iter != _children.rend())
+		{
+			(*iter)->_draw(e);
+			++iter;
 		}
+		
+		_restoreTransform();
+	
         ofPopStyle();
     }
 }
