@@ -562,11 +562,19 @@ public:
     // void setTabIndex(int index);
     // int getTabIndex() const;
 	
+	/// \brief sets if this element will get drawn or not but always draw its children
+	/// \param drawChildrenOnly if true will not draw this element but it will draw its children
+	void setDrawChildrenOnly(bool drawChildrenOnly);
+	
+	/// \brief gets if this element will get drawn or not, but always draw its children
+	/// \returns true this element will not get drawn but its children will.
+	bool isDrawingChildrenOnly() const;
+	
 	///\brief sets if to draw children by translating  or applying a viewport.
 	///\param bViewport when set to true it will draw children clipped by parent.
 	void setDrawAsViewport(bool bViewport);
 	///\brief get if is drawing children by translating  or applying a viewport.
-	bool isDrawingAsViewport()const;
+	bool isDrawingAsViewport() const;
 protected:
     /// \brief Setup method called by parent Element.
     /// \param e The event data.
@@ -691,6 +699,8 @@ private:
 	/// \brief True draw will draw children behind a viewport, clipping all by this.
     bool _drawAsViewport = false;
 	
+	/// \brief If true this element will not get drawn but its children will.
+	bool _drawChildrenOnly = false;
 	
     /// \brief Specifies the tabbing order in the current Element.
     // int _tabIndex = 0;

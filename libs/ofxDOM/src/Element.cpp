@@ -846,9 +846,10 @@ void Element::_draw(ofEventArgs& e)
 		
         ofPushStyle();
 		_applyTransform();
-        // Draw parent behind children.
-        onDraw();
-
+		if(!_drawChildrenOnly){
+			// Draw parent behind children.
+			onDraw();
+		}
         // Now draw in reverse order.
 		auto iter = _children.rbegin();
 		
@@ -1088,5 +1089,14 @@ bool Element::isDrawingAsViewport()const
 	return _drawAsViewport;
 }
 
+void Element::setDrawChildrenOnly(bool drawChildrenOnly)
+{
+	_drawChildrenOnly = drawChildrenOnly;
+}
+
+bool Element::isDrawingChildrenOnly() const
+{
+	return _drawChildrenOnly;
+}
 
 } } // namespace ofx::DOM
