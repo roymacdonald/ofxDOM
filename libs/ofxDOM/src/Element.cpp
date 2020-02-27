@@ -809,7 +809,7 @@ void Element::_setup(ofEventArgs& e)
 
 void Element::_update(ofEventArgs& e)
 {
-    if (_enabled && !_hidden)
+    if (_enabled)
     {
         for (auto& child : _children)
         {
@@ -841,7 +841,7 @@ void Element::_restoreTransform(){
 
 void Element::_draw(ofEventArgs& e)
 {
-    if (_enabled && !_hidden)
+    if (!_hidden)
     {
 		
         ofPushStyle();
@@ -879,7 +879,7 @@ void Element::_exit(ofEventArgs& e)
 
 Element* Element::recursiveHitTest(const Position& parentPosition)
 {
-    if (_enabled && !_hidden)
+    if (_enabled)
     {
         Position childLocal = parentPosition - this->getPosition();
 
@@ -947,9 +947,11 @@ bool Element::isEnabled() const
 
 void Element::setEnabled(bool enabled_)
 {
-    _enabled = enabled_;
-    EnablerEventArgs e(_enabled);
-    ofNotifyEvent(enabled, e, this);
+	if(_enabled != enabled_){
+		_enabled = enabled_;
+		EnablerEventArgs e(_enabled);
+		ofNotifyEvent(enabled, e, this);
+	}
 }
 
 
@@ -961,9 +963,11 @@ bool Element::isHidden() const
 
 void Element::setHidden(bool hidden_)
 {
-    _hidden = hidden_;
-    EnablerEventArgs e(_hidden);
-    ofNotifyEvent(hidden, e, this);
+	if(_hidden != hidden_){
+		_hidden = hidden_;
+		EnablerEventArgs e(_hidden);
+		ofNotifyEvent(hidden, e, this);
+	}
 }
 
 
@@ -975,9 +979,11 @@ bool Element::isLocked() const
 
 void Element::setLocked(bool locked_)
 {
-    _locked = locked_;
-    EnablerEventArgs e(_locked);
-    ofNotifyEvent(locked, e, this);
+	if(_locked != locked_){
+		_locked = locked_;
+		EnablerEventArgs e(_locked);
+		ofNotifyEvent(locked, e, this);
+	}
 }
 
 

@@ -531,8 +531,11 @@ public:
     /// \returns true iff the Element is enabled.
     bool isEnabled() const;
 
-    /// \brief Enable or disable this Element.
+    /// \brief Enable or disable this Element's interaction with the pointer (mouse) events.
     /// \param enabled The enabled state to set. True to enable, false to disable.
+	/// When enabled this element will receive these events and will not when disabled.
+	/// The element will draw regardless of its enabled state.
+	/// Use setHidden to enable or disable drawing the element.
     void setEnabled(bool enabled);
 
     /// \returns true iff the Element is hidden.
@@ -540,6 +543,8 @@ public:
 
     /// \brief Hide or show this Element.
     /// \param hidden The visible state to set. True to hide, false to show.
+	/// When an element is hidden, the pointer (mouse) events will still be passed to it and its children.
+	/// Use setEnabled to enable or disable the mouse pointer events.
     void setHidden(bool hidden);
 
     /// \returns true iff the Element is locked.
@@ -583,11 +588,11 @@ protected:
     /// \brief Update method called by parent Element.
     /// \param e The event data.
     void _update(ofEventArgs& e);
-public:
+
     /// \brief Draw method called by parent Element.
     /// \param e The event data.
 	void _draw(ofEventArgs& e);
-protected:
+
     /// \brief Exit method called by parent Element.
     /// \param e The event data.
     void _exit(ofEventArgs& e);
